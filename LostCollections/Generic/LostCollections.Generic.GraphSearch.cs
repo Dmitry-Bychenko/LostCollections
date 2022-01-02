@@ -9,7 +9,7 @@ namespace LostCollections.Generic {
   //-------------------------------------------------------------------------------------------------------------------
   //
   /// <summary>
-  /// 
+  /// Graph Search
   /// </summary>
   //
   //-------------------------------------------------------------------------------------------------------------------
@@ -18,15 +18,15 @@ namespace LostCollections.Generic {
     #region Public
 
     /// <summary>
-    /// Breadth Firth Search (BFS)
+    /// Breadth First Search (BFS)
     /// </summary>
     /// <param name="root">Root</param>
-    /// <param name="nodes">Nodes</param>
+    /// <param name="edges">Nodes</param>
     /// <returns>Enumerated nodes</returns>
     /// <exception cref="ArgumentNullException">When nodes is null</exception>
-    public static IEnumerable<T> BreadthFirth<T>(T root, Func<T, IEnumerable<T>> nodes) {
-      if (nodes is null)
-        throw new ArgumentNullException(nameof(nodes));
+    public static IEnumerable<T> BreadthFirst<T>(T root, Func<T, IEnumerable<T>> edges) {
+      if (edges is null)
+        throw new ArgumentNullException(nameof(edges));
 
       HashSet<T> completed = new HashSet<T>();
       Queue<T> agenda = new Queue<T>();
@@ -40,7 +40,7 @@ namespace LostCollections.Generic {
           if (completed.Add(node)) {
             yield return node;
 
-            foreach (T next in nodes(node)) 
+            foreach (T next in edges(node)) 
               if (!completed.Contains(next))
                 agenda.Enqueue(next);
           }
@@ -48,15 +48,15 @@ namespace LostCollections.Generic {
     }
 
     /// <summary>
-    /// Depth Firth Search (DFS)
+    /// Depth First Search (DFS)
     /// </summary>
     /// <param name="root">Root</param>
-    /// <param name="nodes">Nodes</param>
+    /// <param name="edges">Nodes</param>
     /// <returns>Enumerated nodes</returns>
     /// <exception cref="ArgumentNullException">When nodes is null</exception>
-    public static IEnumerable<T> DepthFirth<T>(T root, Func<T, IEnumerable<T>> nodes) {
-      if (nodes is null)
-        throw new ArgumentNullException(nameof(nodes));
+    public static IEnumerable<T> DepthFirst<T>(T root, Func<T, IEnumerable<T>> edges) {
+      if (edges is null)
+        throw new ArgumentNullException(nameof(edges));
 
       HashSet<T> completed = new HashSet<T>();
       Stack<T> agenda = new Stack<T>();
@@ -69,7 +69,7 @@ namespace LostCollections.Generic {
         if (completed.Add(node)) {
           yield return node;
 
-          foreach (T next in nodes(node))
+          foreach (T next in edges(node))
             if (!completed.Contains(next))
               agenda.Push(next);
         }
